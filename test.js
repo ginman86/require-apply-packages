@@ -12,7 +12,6 @@ describe('/ping', function () {
     load(dir, app)
     request(app.listen()).get('/ping').expect(200, 'pong', done)
   })
-
 })
 
 describe('/status', function () {
@@ -27,5 +26,26 @@ describe('/status', function () {
     load(dir, app, ['status'])
     request(app.listen()).get('/status').expect(404, done)
   })
+})
 
+describe('/users', function () {
+  it('is attached and responding', function (done) {
+    var app = koa()
+    load(dir, app)
+    request(app.listen()).get('/users').expect(200, 'someuser', done)
+  })
+
+  describe('/users/history', function () {
+    it('is attached and responding when recursive option is enabled', function (done) {
+      var app = koa()
+      load(dir, app, [], true)
+      request(app.listen()).get('/users/history').expect(200, 'somehistory', done)
+    })
+
+    it('is not loaded when recursive option is disabled', function (done) {
+      var app = koa()
+      load(dir, app)
+      request(app.listen()).get('/users/history').expect(404, done)
+    })
+  })
 })
