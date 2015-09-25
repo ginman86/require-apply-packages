@@ -29,8 +29,8 @@ module.exports = packages
  * KOA application instance.
  */
 
-function packages (dir, arg, skip) {
-  var modules = find.in(dir).findDirectories()
+function packages (dir, arg, skip, recursive) {
+  var modules = recursive ? find.from(dir).findDirectories() : find.in(dir).findDirectories()
 
   modules.forEach(function (mod) {
     if (skipped(skip, mod)) return
